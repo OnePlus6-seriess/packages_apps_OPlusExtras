@@ -94,16 +94,6 @@ public class OPlusExtras extends PreferenceFragment
     private static final String SPEAKER_GAIN_DEFAULT = "0";
     private CustomSeekBarPreference mSpeakerGainPreference;
 
-    // Touchscreen
-    private static final String KEY_EDGE_LIMIT = "edge_limit";
-    private SwitchPreference mEdgeLimitSwitch;
-
-    private static final String KEY_HIGH_TOUCH_POLLING_RATE = "high_touch_polling_rate";
-    private static final String KEY_HIGH_TOUCH_POLLING_RATE_INFO = "high_touch_polling_rate_info";
-    private SwitchPreference mHighTouchPollingRateSwitch;
-
-    private static final String KEY_TOUCH_GESTURES = "touchscreen_gestures";
-
     // USB
     private static final String KEY_USB2_FAST_CHARGE = "usb2_fast_charge";
     private static final String KEY_USB2_FAST_CHARGE_INFO = "usb2_fast_charge_info";
@@ -320,40 +310,6 @@ public class OPlusExtras extends PreferenceFragment
             findPreference(KEY_QUIET_MODE).setVisible(false);
         }
 
-        // Edge limit switch
-        mEdgeLimitSwitch = (SwitchPreference) findPreference(KEY_EDGE_LIMIT);
-        if (Utils.isFileWritable(Nodes.nodeEdgeLimit(context))) {
-            mEdgeLimitSwitch.setEnabled(true);
-            mEdgeLimitSwitch.setChecked(sharedPrefs.getBoolean(KEY_EDGE_LIMIT, false));
-            mEdgeLimitSwitch.setOnPreferenceChangeListener(this);
-        } else {
-            mEdgeLimitSwitch.setEnabled(false);
-        }
-
-        if (!getResources().getBoolean(R.bool.config_deviceSupportsDisablingEdgeLimit)) {
-            findPreference(KEY_EDGE_LIMIT).setVisible(false);
-        }
-
-        // High touch polling rate switch
-        mHighTouchPollingRateSwitch = (SwitchPreference) findPreference(KEY_HIGH_TOUCH_POLLING_RATE);
-        if (Utils.isFileWritable(Nodes.nodeHighTouchPollingRate(context))) {
-            mHighTouchPollingRateSwitch.setEnabled(true);
-            mHighTouchPollingRateSwitch.setChecked(sharedPrefs.getBoolean(KEY_HIGH_TOUCH_POLLING_RATE, false));
-            mHighTouchPollingRateSwitch.setOnPreferenceChangeListener(this);
-        } else {
-            mHighTouchPollingRateSwitch.setEnabled(false);
-        }
-
-        if (!getResources().getBoolean(R.bool.config_deviceSupportsHightTouchPollingRate)) {
-            findPreference(KEY_HIGH_TOUCH_POLLING_RATE).setVisible(false);
-            findPreference(KEY_HIGH_TOUCH_POLLING_RATE_INFO).setVisible(false);
-        }
-
-        // Touch gestures
-        if (!getResources().getBoolean(R.bool.config_deviceSupportsTouchGestures)) {
-            findPreference(KEY_TOUCH_GESTURES).setVisible(false);
-        }
-
         // USB 2.0 fast charge switch
         mUSB2FastChargeSwitch = (SwitchPreference) findPreference(KEY_USB2_FAST_CHARGE);
         if (Utils.isFileWritable(Nodes.nodeUSB2FastCharge(context))) {
@@ -509,20 +465,6 @@ public class OPlusExtras extends PreferenceFragment
             SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
             sharedPrefs.edit().putInt(KEY_SPEAKER_GAIN, value).commit();
             Utils.writeValue(Nodes.nodeSpeakerGain(getContext()), String.valueOf(value));
-            return true;
-        // Edge limit switch
-        } else if (preference == mEdgeLimitSwitch) {
-            boolean enabled = (Boolean) newValue;
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-            sharedPrefs.edit().putBoolean(KEY_EDGE_LIMIT, enabled).commit();
-            Utils.writeValue(Nodes.nodeEdgeLimit(getContext()), enabled ? "1" : "0");
-            return true;
-        // High touch polling rate switch
-        } else if (preference == mHighTouchPollingRateSwitch) {
-            boolean enabled = (Boolean) newValue;
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-            sharedPrefs.edit().putBoolean(KEY_HIGH_TOUCH_POLLING_RATE, enabled).commit();
-            Utils.writeValue(Nodes.nodeHighTouchPollingRate(getContext()), enabled ? "1" : "0");
             return true;
         // USB 2.0 fast charge switch
         } else if (preference == mUSB2FastChargeSwitch) {
@@ -936,24 +878,6 @@ public class OPlusExtras extends PreferenceFragment
             int value = sharedPrefs.getInt(KEY_SPEAKER_GAIN,
                 Integer.parseInt(Utils.getFileValue(Nodes.nodeSpeakerGain(context), SPEAKER_GAIN_DEFAULT)));
             Utils.writeValue(Nodes.nodeSpeakerGain(context), String.valueOf(value));
-        }
-    }
-
-    // Edge limit switch
-    public static void restoreEdgeLimitSetting(Context context) {
-        if (Utils.isFileWritable(Nodes.nodeEdgeLimit(context))) {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-            boolean value = sharedPrefs.getBoolean(KEY_EDGE_LIMIT, false);
-            Utils.writeValue(Nodes.nodeEdgeLimit(context), value ? "1" : "0");
-        }
-    }
-
-    // High touch polling rate switch
-    public static void restoreHighTouchPollingRateSetting(Context context) {
-        if (Utils.isFileWritable(Nodes.nodeHighTouchPollingRate(context))) {
-            SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-            boolean value = sharedPrefs.getBoolean(KEY_HIGH_TOUCH_POLLING_RATE, false);
-            Utils.writeValue(Nodes.nodeHighTouchPollingRate(context), value ? "1" : "0");
         }
     }
 

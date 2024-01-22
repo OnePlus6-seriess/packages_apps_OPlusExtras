@@ -189,38 +189,6 @@
             android:defaultValue="0" />
     </PreferenceCategory>
 
-    <!-- Start of touchscreen Category -->
-    <PreferenceCategory
-        android:key="category_touchscreen"
-        android:title="@string/category_touchscreen">
-
-        <SwitchPreference
-            android:key="high_touch_polling_rate"
-            android:title="@string/high_touch_polling_rate_title"
-            android:summary="@string/high_touch_polling_rate_summary" />
-
-        <Preference
-            android:key="high_touch_polling_rate_info"
-            android:icon="@drawable/ic_info_outline"
-            android:summary="@string/high_touch_polling_rate_info"
-            android:persistent="false" />
-
-        <SwitchPreference
-            android:key="edge_limit"
-            android:title="@string/edge_limit_title"
-            android:summary="@string/edge_limit_summary" />
-
-        <Preference
-            android:key="touchscreen_gestures"
-            android:title="@string/touchscreen_gesture_settings_title"
-            android:summary="@string/touchscreen_gesture_settings_summary"
-            android:persistent="false" >
-            <intent android:action="android.intent.action.MAIN"
-                    android:targetPackage="org.evolution.oplus.OPlusExtras"
-                    android:targetClass="org.evolution.oplus.OPlusExtras.touch.TouchscreenGestureSettings" />
-        </Preference>
-    </PreferenceCategory>
-
     <!-- Start of UiBench Category -->
     <PreferenceCategory
         android:key="category_uibench"
